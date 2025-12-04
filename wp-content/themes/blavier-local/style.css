@@ -1,0 +1,33 @@
+/*
+Theme Name: Blavier Local
+Author: Viktor Dominhes
+Description: A local development theme for Blavier.
+Version: 1.0
+Text Domain: blavier-local
+*/
+
+body {
+    font-family: Montserrat, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #75aee6;
+    color: #ffffff;
+    padding: 2rem 0;
+    text-align: center;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+header h2 {
+    font-size: 13px;
+    font-weight: 400;
+    margin: 0;
+}
