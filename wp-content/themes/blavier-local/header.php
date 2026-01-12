@@ -4,12 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <?php wp_head(); ?>
     <link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/style.css">
-    <link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/css/global.css">
-    <link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/css/header.css">
-    <link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/css/footer.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <?php wp_head(); ?>
 </head>
+<body <?php body_class(); ?>>
+    <section class="site-header">
+        <?php get_template_part('template-parts/header/header', 'top'); ?>
+        <?php get_template_part('template-parts/header/header', 'midle'); ?>
+        <?php get_template_part('template-parts/header/header', 'bottom'); ?>
+    </section>

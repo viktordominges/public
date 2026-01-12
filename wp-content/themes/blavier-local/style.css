@@ -6,19 +6,27 @@ Version: 1.0
 Text Domain: blavier-local
 */
 
-body {
-    font-family: Montserrat, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
+:root {
+    --primary-color: #75aee6;
+    --secondary-color: #202533;
+    --black-text-color: #333333;
+    --background-color: #f4f4f4;
+    --white-text-color: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-header {
-    background-color: #75aee6;
-    color: #ffffff;
-    padding: 2rem 0;
-    text-align: center;
+body {
+    font-family: Montserrat, sans-serif;
+    background-color: var(--background-color);
+    color: var(--black-text-color);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
 }
 
 .container {
@@ -26,8 +34,47 @@ header {
     margin: 0 auto;
 }
 
-header h2 {
-    font-size: 13px;
+.header-top {
+    background-color: var(--secondary-color);
+    color: var(--white-text-color);
+    padding: 2rem 0;
+    text-align: center;
+}
+
+.header-midle, .header-bottom {
+    background-color: var(--primary-color);
+    color: var(--white-text-color);
+    padding: 2rem 0;
+    text-align: center;
+}
+
+.site-header h2 {
+    font-size: 36px;
     font-weight: 400;
     margin: 0;
 }
+
+.site-main {
+    flex: 1 0 auto; /* занимает всё свободное место */
+}
+
+.site-footer {
+    flex-shrink: 0; /* футер фиксируется снизу */
+    background-color: var(--secondary-color);
+    color: var(--white-text-color);
+    padding: 2rem 0;
+    text-align: center;
+    font-size: 14px;
+}
+
+
+
+.container-small {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.content {
+    margin-top: 50px;
+}
+

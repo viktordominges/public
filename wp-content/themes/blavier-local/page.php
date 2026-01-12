@@ -1,12 +1,21 @@
 <?php get_header(); ?>
 
-<body <?php body_class(); ?>>
-    <header class="site-header"> 
-        <h2>Page-<?php the_title(); ?></h2>
-    </header>
+<header class="site-header">
+    <h2>Page – <?php the_title(); ?></h2>
+</header>
+
+<main class="site-main">
     <div class="container">
-        <div class="content"><?php the_content(); ?></div>
+        <div class="content">
+
+            <?php if ( have_posts() ) : ?>
+                <?php while ( have_posts() ) : the_post(); ?>
+                    <?php the_content(); ?>
+                <?php endwhile; ?>
+            <?php endif; ?>
+
+        </div>
     </div>
-</body> 
+</main>
 
 <?php get_footer(); ?>
