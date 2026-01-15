@@ -6,6 +6,9 @@ Version: 1.0
 Text Domain: blavier-local
 */
 
+@import './components/button.css';
+@import './template-parts/header/header.css';
+
 :root {
     --primary-color: #75aee6;
     --secondary-color: #202533;
@@ -29,6 +32,19 @@ body {
     height: 100vh;
 }
 
+main {
+    flex: 1; /* основной контент занимает всё свободное место */
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+li {
+    list-style: none;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -37,7 +53,7 @@ body {
 .header-top {
     background-color: var(--secondary-color);
     color: var(--white-text-color);
-    padding: 2rem 0;
+    padding: 8px 0;
     text-align: center;
 }
 
@@ -45,6 +61,13 @@ body {
     background-color: var(--primary-color);
     color: var(--white-text-color);
     padding: 2rem 0;
+    text-align: center;
+}
+
+.site-header {
+    flex-shrink: 0; /* фиксируем хедер */
+    background-color: var(--primary-color);
+    color: var(--white-text-color);
     text-align: center;
 }
 
