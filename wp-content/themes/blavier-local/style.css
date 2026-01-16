@@ -8,6 +8,7 @@ Text Domain: blavier-local
 
 @import './components/button.css';
 @import './template-parts/header/header.css';
+@import './template-parts/accordion/accordion.css';
 
 :root {
     --primary-color: #75aee6;
@@ -72,8 +73,6 @@ li {
     font-size: 14px;
 }
 
-
-
 .container-small {
     max-width: 800px;
     margin: 0 auto;
@@ -83,6 +82,8 @@ li {
     margin-top: 50px;
 }
 
+
+/******************** CTA  *******************/
 .cta {
     background-color: #dae1e3;
     text-align: center;
@@ -117,6 +118,7 @@ li {
 }
 
 .cta-text p {
+    margin-top: 7px;
     font-size: 16px;
     font-weight: 400;
     text-transform: uppercase;
@@ -126,6 +128,8 @@ li {
     border-radius: 0;
 }
 
+
+/******************** Text simple, double, with image  *******************/
 .text-simple {
     padding: 70px 20px;
 }
@@ -178,3 +182,6 @@ li {
     width: 100%;
     height: auto;
 }
+
+
+

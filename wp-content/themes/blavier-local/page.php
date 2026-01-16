@@ -5,8 +5,6 @@
 var2console($builder);
 ?>
 
-
-
 <main class="site-main">
 
     <?php

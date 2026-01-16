@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     initDropdowns('.dropdown-toggle');
+    initAccordion('.accordion-question');
 });
 
 function initDropdowns(selector) {
@@ -38,3 +39,23 @@ function closeAllDropdowns() {
 document.addEventListener('click', () => {
     closeAllDropdowns();
 });
+
+
+// Accordion functionality
+function initAccordion(triggerSelector) {
+    document.querySelectorAll(triggerSelector).forEach(header => {
+        header.addEventListener('click', function() {
+            const content = this.nextElementSibling;
+            
+            // Переключаем активный класс
+            this.classList.toggle('active');
+            
+            // Плавное открытие/закрытие
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + 40 + "px";
+            }
+        });
+    });
+}

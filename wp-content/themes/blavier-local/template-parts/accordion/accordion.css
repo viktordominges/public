@@ -1,0 +1,48 @@
+/******************** FAQ accordion  *******************/
+.accordion {
+    margin: 60px 0;
+}
+
+.accordion-item {
+    margin-top: 30px;
+}
+
+.accordion-question {
+    padding: 15px 15px 15px 60px;
+    background: rgb(218, 225, 227);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    position: relative;
+
+}
+
+.accordion-question::after {
+    content: '+';
+    font-size: 32px;
+    font-weight: 300;
+    position: absolute;
+    left: 27px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.accordion-question.active::after {
+    content: '−';
+}
+
+.accordion-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.accordion-answer p {
+    padding: 20px;
+    line-height: 1.5;
+}
+
+.accordion-answer.show {
+    padding: 30px;
+    max-height: 1000px;
+}
