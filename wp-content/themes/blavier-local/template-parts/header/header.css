@@ -1,6 +1,13 @@
+
+/******************** Top menu styles  *******************/
+.header-top {
+    background-color: var(--secondary-color);
+    color: var(--white-text-color);
+}
+
 .top-menu {
     margin: 0;
-    padding: 0;
+    padding: 8px 0;
     display: flex;
     justify-content: flex-end;
 }
@@ -31,4 +38,139 @@
 
 .top-menu__button {
     margin-left: 10px;
+}
+
+
+/******************** Midle menu styles  *******************/
+.header-midle, .header-bottom {
+    background-color: var(--primary-color);
+    color: var(--white-text-color);
+}
+
+.midle-menu {
+    margin: 0;
+    padding: 15px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.midle-menu_links {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 18px;
+}
+
+.midle-menu li {
+    text-transform: uppercase;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.midle-menu_link:hover, .dropdown-toggle:hover {
+    color: var(--secondary-color);
+}
+
+.dropdown-toggle:hover .dropdown-menu {
+    background-color: var(--secondary-color);
+    color: var(--white-text-color);
+}
+
+.logo {
+    max-width: 150px;
+}
+
+.logo img {
+    width: 100%;
+    height: auto;
+}
+
+.dropdown-toggle {
+    cursor: pointer;
+    position: relative;
+}
+
+.dropdown-toggle::after {
+    display: inline-block;
+    margin-left: .255em;
+    vertical-align: .255em;
+    content: "";
+    border-top: .3em solid;
+    border-right: .3em solid transparent;
+    border-bottom: 0;
+    border-left: .3em solid transparent;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 35px;
+    left: -10px;
+    display: block;
+    min-width: 15rem;
+    text-align: left;
+    background-color: var(--secondary-color);
+    padding: 5px 17px 17px 17px;
+    display: none;
+    z-index: 100;
+    cursor: auto;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-menu li {
+    margin-top: 12px;
+    text-transform: none;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.dropdown-menu li a {
+    display: block;
+}
+
+
+/******************** Bottom menu styles  *******************/
+.header-bottom {
+    background-color: var(--primary-color);
+    color: var(--white-text-color);
+}
+
+.bottom-menu {
+    padding: 40px 0;
+}
+
+.bottom-menu h2 {
+    text-align: center;
+    font-size: 35px;
+    font-weight: 200;
+    text-transform: uppercase;
+    color: var(--secondary-color);
+}
+
+.bottom-menu h2 span {
+    color: var(--white-text-color);
+    font-weight: 600;
+}
+
+.breadcrambs {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--blue-text-color);
+}
+
+.breadcrambs a:hover {
+    color: var(--blue-color);
+    text-decoration: underline;
+}
+
+.breadcrambs-pointer {
+    font-size: 10px;
+    padding: 0 10px;
 }

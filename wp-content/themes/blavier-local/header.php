@@ -17,5 +17,7 @@
     <section class="site-header">
         <?php get_template_part('template-parts/header/header', 'top'); ?>
         <?php get_template_part('template-parts/header/header', 'midle'); ?>
-        <?php get_template_part('template-parts/header/header', 'bottom'); ?>
+        <?php if ( ! is_front_page() && ! is_404() ) : ?>
+            <?php get_template_part('template-parts/header/header', 'bottom'); ?>
+        <?php endif; ?>
     </section>

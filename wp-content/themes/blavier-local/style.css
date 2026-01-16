@@ -13,8 +13,10 @@ Text Domain: blavier-local
     --primary-color: #75aee6;
     --secondary-color: #202533;
     --black-text-color: #333333;
-    --background-color: #f4f4f4;
+    --background-color: #ffffff;
     --white-text-color: #ffffff;
+    --blue-text-color: #bfdbf7;
+    --blue-color: #2476c7;
 }
 
 * {
@@ -50,31 +52,11 @@ li {
     margin: 0 auto;
 }
 
-.header-top {
-    background-color: var(--secondary-color);
-    color: var(--white-text-color);
-    padding: 8px 0;
-    text-align: center;
-}
-
-.header-midle, .header-bottom {
-    background-color: var(--primary-color);
-    color: var(--white-text-color);
-    padding: 2rem 0;
-    text-align: center;
-}
-
 .site-header {
     flex-shrink: 0; /* фиксируем хедер */
     background-color: var(--primary-color);
     color: var(--white-text-color);
     text-align: center;
-}
-
-.site-header h2 {
-    font-size: 36px;
-    font-weight: 400;
-    margin: 0;
 }
 
 .site-main {
@@ -101,3 +83,98 @@ li {
     margin-top: 50px;
 }
 
+.cta {
+    background-color: #dae1e3;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.cta-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cta-icon {
+    width: 85px;
+    height: 85px;
+}
+
+.cta-icon img {
+    width: 100%;
+    height: auto;
+}
+
+.cta-text {
+    text-align: left;
+    text-decoration: uppercase;
+}
+
+.cta-text h2 {
+    font-size: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.cta-text p {
+    font-size: 16px;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.cta-button {
+    border-radius: 0;
+}
+
+.text-simple {
+    padding: 70px 20px;
+}
+
+.text-simple__title {
+    font-size: 22px;
+    font-weight: 600;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.divider {
+    max-width: 550px;
+    height: 1px;
+    background-color: var(--blue-color);
+    margin: 15px auto 0 auto;
+}
+
+.text-simple__content,
+.text-simple__right-img,
+.text-simple__double {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-top: 40px;
+    text-align: left;
+    flex: 1;
+}
+
+.text-simple__double {
+    margin-top: 0;
+}
+
+.text-simple__right-img,
+.text-simple__double {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.text-simple__text-left {
+    flex: 2;
+}
+
+.text-simple__img-right {
+    flex: 1;
+}
+
+.text-simple__img-right img {
+    width: 100%;
+    height: auto;
+}
