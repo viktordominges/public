@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    initDropdowns('.dropdown-toggle');
+    initDropdowns('.menu-item-has-children');
     initAccordion('.accordion-question');
 });
 
@@ -7,14 +7,14 @@ function initDropdowns(selector) {
     const dropdowns = document.querySelectorAll(selector);
 
     dropdowns.forEach(dropdown => {
-        dropdown.addEventListener('click', (e) => {
-            // Если клик по ссылке внутри меню — ничего не трогаем
-            if (e.target.tagName === 'A') return;
+        const link = dropdown.querySelector('a');
+        const menu = dropdown.querySelector('.sub-menu');
 
+        if (!link || !menu) return;
+
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
             e.stopPropagation();
-
-            const menu = dropdown.querySelector('.dropdown-menu');
-            if (!menu) return;
 
             const isOpen = menu.classList.contains('show');
 
@@ -28,8 +28,9 @@ function initDropdowns(selector) {
     });
 }
 
+
 function closeAllDropdowns() {
-    document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+    document.querySelectorAll('.sub-menu.show').forEach(menu => {
         menu.classList.remove('show');
         menu.parentElement.classList.remove('open');
     });
@@ -39,6 +40,7 @@ function closeAllDropdowns() {
 document.addEventListener('click', () => {
     closeAllDropdowns();
 });
+
 
 
 // Accordion functionality

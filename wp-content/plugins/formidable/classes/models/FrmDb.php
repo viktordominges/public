@@ -55,7 +55,7 @@ class FrmDb {
 	 * @return void
 	 */
 	public static function get_where_clause_and_values( &$args, $starts_with = ' WHERE ' ) {
-		if ( empty( $args ) ) {
+		if ( ! $args ) {
 			// add an arg to prevent prepare from failing
 			$args = array(
 				'where'  => $starts_with . '1=%d',
@@ -93,8 +93,9 @@ class FrmDb {
 		}
 
 		foreach ( $args as $key => $value ) {
-			$where         .= empty( $where ) ? $base_where : $condition;
-			$array_inc_null = ( ! is_numeric( $key ) && is_array( $value ) && in_array( null, $value ) );
+			$where .= empty( $where ) ? $base_where : $condition;
+			// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
+			$array_inc_null = ! is_numeric( $key ) && is_array( $value ) && in_array( null, $value );
 
 			if ( is_numeric( $key ) || $array_inc_null ) {
 				$where       .= ' ( ';
@@ -131,7 +132,7 @@ class FrmDb {
 	private static function interpret_array_to_sql( $key, $value, &$where, &$values ) {
 		$key = trim( $key );
 
-		if ( strpos( $key, 'created_at' ) !== false || strpos( $key, 'updated_at' ) !== false ) {
+		if ( str_contains( $key, 'created_at' ) || str_contains( $key, 'updated_at' ) ) {
 			$k      = explode( ' ', $key );
 			$where .= ' CAST(' . reset( $k ) . ' as CHAR) ' . str_replace( reset( $k ), '', $key );
 		} else {
@@ -143,7 +144,7 @@ class FrmDb {
 
 		if ( is_array( $value ) ) {
 			// translate array of values to "in"
-			if ( strpos( $lowercase_key, 'like' ) !== false ) {
+			if ( str_contains( $lowercase_key, 'like' ) ) {
 				$where  = preg_replace( '/' . $key . '$/', '', $where );
 				$where .= '(';
 				$start  = true;
@@ -159,11 +160,11 @@ class FrmDb {
 				}
 
 				$where .= ')';
-			} elseif ( ! empty( $value ) ) {
+			} elseif ( $value ) {
 				$where .= ' in (' . self::prepare_array_values( $value, '%s' ) . ')';
 				$values = array_merge( $values, $value );
 			}
-		} elseif ( strpos( $lowercase_key, 'like' ) !== false ) {
+		} elseif ( str_contains( $lowercase_key, 'like' ) ) {
 			/**
 			 * Allow string to start or end with the value
 			 * If the key is like% then skip the first % for starts with
@@ -188,7 +189,7 @@ class FrmDb {
 			$where .= ' IS NULL';
 		} else {
 			// allow a - to prevent = from being added
-			if ( substr( $key, - 1 ) === '-' ) {
+			if ( str_ends_with( $key, '-' ) ) {
 				$where = rtrim( $where, '-' );
 			} else {
 				$where .= '=';
@@ -212,7 +213,7 @@ class FrmDb {
 	 * @return void
 	 */
 	private static function add_query_placeholder( $key, $value, &$where ) {
-		if ( is_numeric( $value ) && ( strpos( $key, 'meta_value' ) === false || strpos( $key, '+0' ) !== false ) ) {
+		if ( is_numeric( $value ) && ( ! str_contains( $key, 'meta_value' ) || str_contains( $key, '+0' ) ) ) {
 			// Switch string to number.
 			$value  = $value + 0;
 			$where .= is_float( $value ) ? '%f' : '%d';
@@ -230,7 +231,6 @@ class FrmDb {
 	 */
 	public static function get_count( $table, $where = array(), $args = array() ) {
 		$count = self::get_var( $table, $where, 'COUNT(*)', $args );
-
 		return (int) $count;
 	}
 
@@ -253,12 +253,10 @@ class FrmDb {
 			$args['limit'] = 1;
 		}
 
-		$query = self::generate_query_string_from_pieces( $field, $table, $where, $args );
-
+		$query     = self::generate_query_string_from_pieces( $field, $table, $where, $args );
 		$cache_key = self::generate_cache_key( $where, $args, $field, $type );
-		$results   = self::check_cache( $cache_key, $group, $query, 'get_' . $type );
 
-		return $results;
+		return self::check_cache( $cache_key, $group, $query, 'get_' . $type );
 	}
 
 	/**
@@ -282,9 +280,8 @@ class FrmDb {
 		}
 
 		$cache_key .= implode( '_', $args ) . $field . '_' . $type;
-		$cache_key  = str_replace( array( ' ', ',' ), '_', $cache_key );
 
-		return $cache_key;
+		return str_replace( array( ' ', ',' ), '_', $cache_key );
 	}
 
 	/**
@@ -388,7 +385,7 @@ class FrmDb {
 		$prefix = $wpdb->base_prefix;
 		self::maybe_remove_prefix( $prefix, $group );
 
-		if ( $group == $table ) {
+		if ( $group === $table ) {
 			$table = $wpdb->prefix . $table;
 		}
 
@@ -407,7 +404,7 @@ class FrmDb {
 	 * @return void
 	 */
 	private static function maybe_remove_prefix( $prefix, &$name ) {
-		if ( substr( $name, 0, strlen( $prefix ) ) === $prefix ) {
+		if ( str_starts_with( $name, $prefix ) ) {
 			$name = substr( $name, strlen( $prefix ) );
 		}
 	}
@@ -424,17 +421,18 @@ class FrmDb {
 			$args = array( 'order_by' => $args );
 		}
 
-		if ( ! empty( $order_by ) ) {
+		if ( $order_by ) {
 			$args['order_by'] = $order_by;
 		}
 
-		if ( ! empty( $limit ) ) {
+		if ( $limit ) {
 			$args['limit'] = $limit;
 		}
 
 		$temp_args = $args;
 
 		foreach ( $temp_args as $k => $v ) {
+			// phpcs:ignore Universal.Operators.StrictComparisons
 			if ( $v == '' ) {
 				unset( $args[ $k ] );
 				continue;
@@ -442,7 +440,7 @@ class FrmDb {
 
 			$db_name = strtoupper( str_replace( '_', ' ', $k ) );
 
-			if ( strpos( $v, $db_name ) === false ) {
+			if ( ! str_contains( $v, $db_name ) ) {
 				$args[ $k ] = $db_name . ' ' . $v;
 			}
 		}
@@ -470,12 +468,10 @@ class FrmDb {
 		$group = '';
 		self::get_group_and_table_name( $table, $group );
 
-		$query = self::generate_query_string_from_pieces( $columns, $table, $where );
-
+		$query     = self::generate_query_string_from_pieces( $columns, $table, $where );
 		$cache_key = str_replace( array( ' ', ',' ), '_', trim( implode( '_', FrmAppHelper::array_flatten( $where ) ) . $columns . '_results_ARRAY_A', ' WHERE' ) );
-		$results   = self::check_cache( $cache_key, $group, $query, 'get_associative_results' );
 
-		return $results;
+		return self::check_cache( $cache_key, $group, $query, 'get_associative_results' );
 	}
 
 	/**
@@ -519,6 +515,7 @@ class FrmDb {
 				$args[ $param ] = self::esc_limit( $value );
 			}
 
+			// phpcs:ignore Universal.Operators.StrictComparisons
 			if ( $args[ $param ] == '' ) {
 				unset( $args[ $param ] );
 			}
@@ -536,7 +533,6 @@ class FrmDb {
 	 */
 	public static function esc_like( $term ) {
 		global $wpdb;
-
 		return $wpdb->esc_like( $term );
 	}
 
@@ -548,23 +544,22 @@ class FrmDb {
 	 * @return string
 	 */
 	public static function esc_order( $order_query ) {
-		if ( empty( $order_query ) ) {
+		if ( ! $order_query ) {
 			return '';
 		}
 
 		// Remove ORDER BY before sanitizing.
 		$order_query = strtolower( $order_query );
 
-		if ( strpos( $order_query, 'order by' ) !== false ) {
+		if ( str_contains( $order_query, 'order by' ) ) {
 			$order_query = str_replace( 'order by', '', $order_query );
 		}
 
 		$order_query = explode( ' ', trim( $order_query ) );
+		$order       = trim( reset( $order_query ) );
+		$safe_order  = array( 'count(*)' );
 
-		$order      = trim( reset( $order_query ) );
-		$safe_order = array( 'count(*)' );
-
-		if ( ! in_array( strtolower( $order ), $safe_order ) ) {
+		if ( ! in_array( strtolower( $order ), $safe_order, true ) ) {
 			$order = preg_replace( '/[^a-zA-Z0-9\-\_\.\+]/', '', $order );
 		}
 
@@ -603,7 +598,7 @@ class FrmDb {
 	 * @return string
 	 */
 	public static function esc_limit( $limit ) {
-		if ( empty( $limit ) ) {
+		if ( ! $limit ) {
 			return '';
 		}
 
@@ -638,7 +633,6 @@ class FrmDb {
 	 */
 	public static function prepare_array_values( $array, $type = '%s' ) {
 		$placeholders = array_fill( 0, count( $array ), $type );
-
 		return implode( ', ', $placeholders );
 	}
 
@@ -651,7 +645,7 @@ class FrmDb {
 	 * @return string
 	 */
 	public static function prepend_and_or_where( $starts_with = ' WHERE ', $where = '' ) {
-		if ( empty( $where ) ) {
+		if ( ! $where ) {
 			$where = '';
 		} elseif ( is_array( $where ) ) {
 				global $wpdb;
@@ -750,7 +744,7 @@ class FrmDb {
 			return $results;
 		}
 
-		if ( 'get_posts' == $type ) {
+		if ( 'get_posts' === $type ) {
 			$results = get_posts( $query );
 		} elseif ( 'get_associative_results' === $type ) {
 			global $wpdb;
@@ -841,7 +835,7 @@ class FrmDb {
 	public static function cache_delete_group( $group ) {
 		$cached_keys = self::get_group_cached_keys( $group );
 
-		if ( ! empty( $cached_keys ) ) {
+		if ( $cached_keys ) {
 			foreach ( $cached_keys as $key ) {
 				wp_cache_delete( $key, $group );
 			}

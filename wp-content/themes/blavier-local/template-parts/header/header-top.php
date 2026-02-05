@@ -1,13 +1,11 @@
 <div class="header-top">
     <div class="container">
         <nav class="top-menu">
-            <ul>
-                <li><a href="/projects-for-sale">Projets en vente</a></li>
-                <li><a href="/contacts">Contact</a></li>
-                <li><a href="/blog">Blog</a></li>
-                <li><a href="/faq">FAQ</a></li>
-            </ul>
+
             <?php
+            wp_nav_menu(array(
+                'theme_location'  => 'header_top',
+            ));
 
             get_button(array(
                 'text' => 'Demandez votre catalogue ici',

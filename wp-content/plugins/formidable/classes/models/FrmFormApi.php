@@ -50,7 +50,7 @@ class FrmFormApi {
 		if ( $license === null ) {
 			$edd_update = $this->get_pro_updater();
 
-			if ( ! empty( $edd_update ) ) {
+			if ( $edd_update ) {
 				$license = $edd_update->license;
 			}
 		}
@@ -142,7 +142,7 @@ class FrmFormApi {
 			if ( isset( $addon['categories'] ) ) {
 				$cats = array_intersect( $this->skip_categories(), $addon['categories'] );
 
-				if ( ! empty( $cats ) ) {
+				if ( $cats ) {
 					unset( $addons[ $k ] );
 					continue;
 				}
@@ -253,14 +253,14 @@ class FrmFormApi {
 	 * @return array
 	 */
 	public function get_addon_for_license( $license_plugin, $addons = array() ) {
-		if ( empty( $addons ) ) {
+		if ( ! $addons ) {
 			$addons = $this->get_api_info();
 		}
 
 		$download_id = $license_plugin->download_id;
 		$plugin      = array();
 
-		if ( empty( $download_id ) && ! empty( $addons ) ) {
+		if ( ! $download_id && ! empty( $addons ) ) {
 			foreach ( $addons as $addon ) {
 				if ( is_array( $addon ) && ! empty( $addon['title'] ) && strtolower( $license_plugin->plugin_name ) === strtolower( $addon['title'] ) ) {
 					return $addon;
@@ -297,7 +297,7 @@ class FrmFormApi {
 	protected function get_cached() {
 		$cache = $this->get_cached_option();
 
-		if ( empty( $cache ) ) {
+		if ( ! $cache ) {
 			return false;
 		}
 
@@ -314,9 +314,7 @@ class FrmFormApi {
 			return false;
 		}
 
-		$values = json_decode( $cache['value'], true );
-
-		return $values;
+		return json_decode( $cache['value'], true );
 	}
 
 	/**
@@ -356,7 +354,7 @@ class FrmFormApi {
 			update_site_option( $this->cache_key, $data );
 		} else {
 			// Autoload the license cache because it gets called everywhere.
-			$autoload = 0 === strpos( $this->cache_key, 'frm_addons_l' );
+			$autoload = str_starts_with( $this->cache_key, 'frm_addons_l' );
 			update_option( $this->cache_key, $data, $autoload );
 		}
 	}
@@ -371,12 +369,10 @@ class FrmFormApi {
 	 * @return string
 	 */
 	protected function get_cache_timeout( $addons ) {
-		$timeout = $this->cache_timeout;
-
 		if ( isset( $addons['response_code'] ) && 429 === $addons['response_code'] ) {
-			$timeout = '+5 minutes';
+			return '+5 minutes';
 		}
-		return $timeout;
+		return $this->cache_timeout;
 	}
 
 	/**
@@ -399,13 +395,10 @@ class FrmFormApi {
 	 * @return array
 	 */
 	public function error_for_license() {
-		$errors = array();
-
 		if ( ! empty( $this->license ) ) {
-			$errors = $this->get_error_from_response();
+			return $this->get_error_from_response();
 		}
-
-		return $errors;
+		return array();
 	}
 
 	/**
@@ -416,7 +409,7 @@ class FrmFormApi {
 	 * @return array
 	 */
 	public function get_error_from_response( $addons = array() ) {
-		if ( empty( $addons ) ) {
+		if ( ! $addons ) {
 			$addons = $this->get_api_info();
 		}
 

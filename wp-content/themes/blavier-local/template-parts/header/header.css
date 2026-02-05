@@ -10,23 +10,31 @@
     padding: 8px 0;
     display: flex;
     justify-content: flex-end;
+    align-items: center;
 }
 
 .top-menu ul {
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    align-self: center;
 }
 
 .top-menu li {
     text-transform: uppercase;
-    font-size: 12px;
     line-height: 1.5;
+    font-size: 12px;
 }
 
 .top-menu a:hover {
     color: var(--primary-color);
     text-decoration: underline;
+    
+}
+
+.top-menu li:last-child {
+
+    padding-top: 3px;
 }
 
 .top-menu li:not(:last-child):after {
@@ -47,6 +55,7 @@
     color: var(--white-text-color);
 }
 
+
 .midle-menu {
     margin: 0;
     padding: 15px 0;
@@ -55,7 +64,7 @@
     align-items: center;
 }
 
-.midle-menu_links {
+#menu-header-middle {
     margin: 0;
     padding: 0;
     display: flex;
@@ -64,17 +73,17 @@
     gap: 18px;
 }
 
+#menu-header-middle li a:hover {
+    color: var(--secondary-color);
+}
+
 .midle-menu li {
     text-transform: uppercase;
     font-size: 12px;
     line-height: 1.5;
 }
 
-.midle-menu_link:hover, .dropdown-toggle:hover {
-    color: var(--secondary-color);
-}
-
-.dropdown-toggle:hover .dropdown-menu {
+.menu-item-has-children:hover .sub-menu {
     background-color: var(--secondary-color);
     color: var(--white-text-color);
 }
@@ -88,12 +97,12 @@
     height: auto;
 }
 
-.dropdown-toggle {
+.menu-item-has-children {
     cursor: pointer;
     position: relative;
 }
 
-.dropdown-toggle::after {
+.menu-item-has-children::after {
     display: inline-block;
     margin-left: .255em;
     vertical-align: .255em;
@@ -104,7 +113,7 @@
     border-left: .3em solid transparent;
 }
 
-.dropdown-menu {
+.sub-menu {
     position: absolute;
     top: 35px;
     left: -10px;
@@ -118,18 +127,18 @@
     cursor: auto;
 }
 
-.dropdown-menu.show {
+.sub-menu.show {
     display: block;
 }
 
-.dropdown-menu li {
+.sub-menu li {
     margin-top: 12px;
     text-transform: none;
     font-size: 14px;
     cursor: pointer;
 }
 
-.dropdown-menu li a {
+.sub-menu li a {
     display: block;
 }
 
@@ -144,13 +153,22 @@
     padding: 40px 0;
 }
 
-.bottom-menu h2 {
+.bottom-menu__title {
     text-align: center;
     font-size: 35px;
-    font-weight: 200;
     text-transform: uppercase;
-    color: var(--secondary-color);
 }
+
+.bottom-menu__title .part1 {
+    color: var(--white-text-color);
+    font-weight: 600;
+}
+
+.bottom-menu__title .part2 {
+    color: var(--secondary-color);
+    font-weight: 200;
+}
+    
 
 .bottom-menu h2 span {
     color: var(--white-text-color);

@@ -1,36 +1,43 @@
 <?php get_header(); ?>
 
 <main class="site-main">
+    <div class="activities-wrapper">
 
-    <div class="container">
-        <section class="features">
-            <h2>Nos avantages</h2>
-            <!-- ACF / блоки / кастом -->
-        </section>
+        <?php
+        $activities = new WP_Query([
+            'post_type'      => 'activity',
+            'posts_per_page' => 9,
+            'paged'          => get_query_var('paged') ?: 1,
+        ]);
+        ?>
 
-        <section class="latest-posts">
-            <h2>Derniers articles</h2>
+        <?php if ($activities->have_posts()) : ?>
+            <div class="activities-grid">
+
+                <?php while ($activities->have_posts()) : $activities->the_post(); ?>
+
+                    <?php get_template_part(
+                        'template-parts/cards/card',
+                        'activity'
+                    ); ?>
+
+                <?php endwhile; ?>
+
+            </div>
 
             <?php
-            $query = new WP_Query([
-                'post_type'      => 'post',
-                'posts_per_page' => 3
+            the_posts_pagination([
+                'total' => $activities->max_num_pages
             ]);
             ?>
 
-            <?php if ($query->have_posts()) : ?>
-                <?php while ($query->have_posts()) : $query->the_post(); ?>
-                    <article>
-                        <h3><?php the_title(); ?></h3>
-                        <?php the_excerpt(); ?>
-                        <a href="<?php the_permalink(); ?>">Lire</a>
-                    </article>
-                <?php endwhile; ?>
-                <?php wp_reset_postdata(); ?>
-            <?php endif; ?>
-        </section>
-    </div>
+        <?php else : ?>
+            <p>Aucun événements.</p>
+        <?php endif; ?>
 
+        <?php wp_reset_postdata(); ?>
+
+    </div>
 </main>
 
 <?php get_footer(); ?>

@@ -142,12 +142,7 @@ class FrmEntryFormatter {
 	 */
 	protected function init_entry( $atts ) {
 		if ( isset( $atts['entry'] ) && is_object( $atts['entry'] ) ) {
-
-			if ( isset( $atts['entry']->metas ) ) {
-				$this->entry = $atts['entry'];
-			} else {
-				$this->entry = FrmEntry::getOne( $atts['entry']->id, true );
-			}
+			$this->entry = isset( $atts['entry']->metas ) ? $atts['entry'] : FrmEntry::getOne( $atts['entry']->id, true );
 		} elseif ( ! empty( $atts['id'] ) ) {
 			$this->entry = FrmEntry::getOne( $atts['id'], true );
 		}
@@ -177,8 +172,7 @@ class FrmEntryFormatter {
 	 * @return array
 	 */
 	protected function prepare_entry_attributes( $atts ) {
-		$entry_atts = array();
-
+		$entry_atts        = array();
 		$conditionally_add = array( 'include_fields', 'fields', 'exclude_fields', 'entry' );
 
 		foreach ( $conditionally_add as $index ) {
@@ -205,11 +199,7 @@ class FrmEntryFormatter {
 		} elseif ( $atts['format'] === 'json' ) {
 			$this->format = 'json';
 		} elseif ( $atts['format'] === 'text' ) {
-			if ( $this->is_plain_text === true ) {
-				$this->format = 'plain_text_block';
-			} else {
-				$this->format = 'table';
-			}
+			$this->format = $this->is_plain_text === true ? 'plain_text_block' : 'table';
 		}
 
 		/**
@@ -256,7 +246,7 @@ class FrmEntryFormatter {
 	 * @return void
 	 */
 	protected function init_is_plain_text( $atts ) {
-		if ( isset( $atts['plain_text'] ) && $atts['plain_text'] ) {
+		if ( ! empty( $atts['plain_text'] ) ) {
 			$this->is_plain_text = true;
 		} elseif ( $atts['format'] !== 'text' ) {
 			$this->is_plain_text = true;
@@ -273,7 +263,7 @@ class FrmEntryFormatter {
 	 * @return void
 	 */
 	protected function init_include_blank( $atts ) {
-		if ( isset( $atts['include_blank'] ) && $atts['include_blank'] ) {
+		if ( ! empty( $atts['include_blank'] ) ) {
 			$this->include_blank = true;
 		}
 	}
@@ -303,7 +293,7 @@ class FrmEntryFormatter {
 	 * @return void
 	 */
 	protected function init_include_user_info( $atts ) {
-		if ( isset( $atts['user_info'] ) && $atts['user_info'] ) {
+		if ( ! empty( $atts['user_info'] ) ) {
 			$this->include_user_info = true;
 		}
 	}
@@ -329,7 +319,7 @@ class FrmEntryFormatter {
 	 * @return void
 	 */
 	protected function init_include_extras( $atts ) {
-		if ( isset( $atts['include_extras'] ) && $atts['include_extras'] ) {
+		if ( ! empty( $atts['include_extras'] ) ) {
 			$this->include_extras = array_map( 'strtolower', array_map( 'trim', explode( ',', $atts['include_extras'] ) ) );
 		}
 	}
@@ -368,7 +358,7 @@ class FrmEntryFormatter {
 	 * @return void
 	 */
 	protected function init_is_clickable( $atts ) {
-		if ( isset( $atts['clickable'] ) && $atts['clickable'] ) {
+		if ( ! empty( $atts['clickable'] ) ) {
 			$this->is_clickable = true;
 		}
 	}
@@ -565,12 +555,9 @@ class FrmEntryFormatter {
 	 */
 	protected function push_single_field_to_array( $field_value, &$output ) {
 		if ( $this->include_field_in_content( $field_value ) ) {
-
-			$displayed_value = $this->prepare_display_value_for_array( $field_value->get_displayed_value() );
-
+			$displayed_value                                = $this->prepare_display_value_for_array( $field_value->get_displayed_value() );
 			$output[ $this->get_key_or_id( $field_value ) ] = $displayed_value;
-
-			$has_separate_value = (bool) $field_value->get_field_option( 'separate_value' );
+			$has_separate_value                             = (bool) $field_value->get_field_option( 'separate_value' );
 
 			if ( $has_separate_value || $displayed_value !== $field_value->get_saved_value() ) {
 				$output[ $this->get_key_or_id( $field_value ) . '-value' ] = $field_value->get_saved_value();
@@ -676,7 +663,7 @@ class FrmEntryFormatter {
 	protected function add_html_row_for_included_extra( $field_value, &$content ) {
 		$this->prepare_html_display_value_for_extra_fields( $field_value, $display_value );
 
-		if ( in_array( $field_value->get_field_type(), $this->single_cell_fields ) ) {
+		if ( in_array( $field_value->get_field_type(), $this->single_cell_fields, true ) ) {
 			$this->add_single_cell_html_row( $display_value, $content );
 		} else {
 			$value_args = $this->package_value_args( $field_value );
@@ -697,7 +684,7 @@ class FrmEntryFormatter {
 	protected function add_plain_text_row_for_included_extra( $field_value, &$content ) {
 		$this->prepare_plain_text_display_value_for_extra_fields( $field_value, $display_value );
 
-		if ( in_array( $field_value->get_field_type(), $this->single_cell_fields ) ) {
+		if ( in_array( $field_value->get_field_type(), $this->single_cell_fields, true ) ) {
 			$this->add_single_value_plain_text_row( $display_value, $content );
 		} else {
 			$this->add_plain_text_row( $field_value->get_field_label(), $display_value, $content );
@@ -833,7 +820,6 @@ class FrmEntryFormatter {
 	 */
 	protected function add_user_info_to_plain_text_content( &$content ) {
 		if ( $this->include_user_info ) {
-
 			foreach ( $this->entry_values->get_user_info() as $user_info ) {
 				$this->add_plain_text_row( $user_info['label'], $user_info['value'], $content );
 			}
@@ -871,7 +857,7 @@ class FrmEntryFormatter {
 	 * @return bool
 	 */
 	protected function is_extra_field( $field_value ) {
-		return in_array( $field_value->get_field_type(), $this->skip_fields() );
+		return in_array( $field_value->get_field_type(), $this->skip_fields(), true );
 	}
 
 	/**
@@ -884,7 +870,7 @@ class FrmEntryFormatter {
 	 * @return bool
 	 */
 	protected function is_extra_field_included( $field_value ) {
-		return in_array( $field_value->get_field_type(), $this->include_extras );
+		return in_array( $field_value->get_field_type(), $this->include_extras, true );
 	}
 
 	/**
@@ -956,9 +942,7 @@ class FrmEntryFormatter {
 	 */
 	protected function prepare_display_value_for_plain_text_content( $display_value ) {
 		$display_value = $this->flatten_array( $display_value );
-		$display_value = $this->strip_html( $display_value );
-
-		return $display_value;
+		return $this->strip_html( $display_value );
 	}
 
 	/**
@@ -995,7 +979,7 @@ class FrmEntryFormatter {
 					$value[ $key ] = $this->strip_html( $single_value );
 				}
 			} elseif ( $this->is_plain_text && ! is_array( $value ) ) {
-				if ( strpos( $value, '<img' ) !== false ) {
+				if ( str_contains( $value, '<img' ) ) {
 					$value = str_replace( array( '<img', 'src=', '/>', '"' ), '', $value );
 					$value = trim( $value );
 				}
