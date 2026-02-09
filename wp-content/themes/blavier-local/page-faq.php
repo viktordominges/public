@@ -19,7 +19,9 @@ var2console($accordion);
             endif;
             ?>
         </div> 
-    </div>  
+    </div>
+    
+    <?php get_template_part('template-parts/global/cta'); ?>  
 </main>
 
 <?php get_footer(); ?>

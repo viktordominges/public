@@ -18,6 +18,29 @@ function register_activity_cpt() {
 add_action('init', 'register_activity_cpt');
 
 
+if (function_exists('acf_add_options_page')) {
+    acf_add_options_page([
+        'page_title' => 'Site Settings',
+        'menu_title' => 'Options',
+        'menu_slug'  => 'theme-options',
+        'capability' => 'edit_posts',
+        'redirect'   => false
+    ]);
+
+    acf_add_options_sub_page([
+        'page_title'  => 'Social Media',
+        'menu_title'  => 'Social Media',
+        'parent_slug' => 'theme-options',
+    ]);
+
+    acf_add_options_sub_page([
+        'page_title'  => 'CTA Block',
+        'menu_title'  => 'CTA Block',
+        'parent_slug' => 'theme-options',
+    ]);
+}
+
+
 // Correct connection of styles and scripts
 function blavier_enqueue_script() {
     // Основной CSS темы
@@ -176,7 +199,7 @@ function theme_builder($field = 'builder', $post_id = null) {
     }
 
     $layouts = [
-        'cta'               => 'cta',
+        // 'cta'               => 'cta',
         'text-simple'       => 'text-simple',
         'text-with-title'   => 'text-with-title',
         'text-right-img'    => 'text-right-img',

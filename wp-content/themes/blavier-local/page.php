@@ -17,6 +17,9 @@
         theme_builder();
     }
     ?>
+
+
+    <?php get_template_part('template-parts/global/cta'); ?>
 </main>
 
 <?php get_footer(); ?>

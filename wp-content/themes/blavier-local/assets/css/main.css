@@ -533,17 +533,17 @@ li {
     object-position: center center;
 }
 
-.footer-sicial-media {
+.footer-social-media {
     margin-top: 35px;
     display: flex;
     gap: 20px;
 }
 
-.footer-sicial-media i {
+.footer-social-media i {
     font-size: 20px;
 }
 
-.footer-sicial-media i:hover {
+.footer-social-media i:hover {
     color: var(--blue-color);
 }
 
